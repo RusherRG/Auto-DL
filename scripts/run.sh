@@ -88,30 +88,30 @@ frontend_setup() {
 
 backend_setup() {
     echo -e "${INFO} Setting up backend"
-    sudo pip3 install setuptools
-    pip3 install -r $WORKDIR/requirements.txt
+    # sudo apt-get install --reinstall python3-setuptools
+    # pip3 install --upgrade setuptools
+    # pip3 install -r $WORKDIR/requirements.txt
 }
 
 run() {
     echo -e "${INFO} Starting backend server"
     cd $BACKEND_PATH
-    python3 manage.py runserver &
+    python3 manage.py runserver 0.0.0.0:8000 &
     BACKEND_PID=$!
     echo -e "${TICK} Backend server running"
     echo ""
 
-    echo -e "${INFO} Starting frontend server"
-    cd $FRONTEND_PATH
-    npm start &
-    FRONTEND_PID=$!
-    echo -e "${TICK} Frontend server running"
+    # echo -e "${INFO} Starting frontend server"
+    # cd $FRONTEND_PATH
+    # npm start &
+    # FRONTEND_PID=$!
+    # echo -e "${TICK} Frontend server running"
 
-    # Since we now expect to receive SIGINT
-    # process terminations might return non-zero status
-    set +e
-    wait $BACKEND_PID
-    wait $FRONTEND_PID
-
+    # # Since we now expect to receive SIGINT
+    # # process terminations might return non-zero status
+    # set +e
+    # wait $BACKEND_PID
+    # wait $FRONTEND_PID
 }
 
 # Terminate processes
