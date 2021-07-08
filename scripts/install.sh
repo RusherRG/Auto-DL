@@ -68,7 +68,7 @@ install_binaries() {
         npm --version
     else
         echo -e "${INFO} Installing latest node.js"
-        curl -fsSL https://deb.nodesource.com/setup_14.x |  bash -
+        # curl -fsSL https://deb.nodesource.com/setup_14.x |  bash -
         apt-get install -y nodejs
         echo -e "${TICK} NodeJS installed"
     fi
@@ -77,7 +77,7 @@ install_binaries() {
 
 main() {
     echo ""
-    sudo_check
+    # sudo_check
     install_binaries
 }
 

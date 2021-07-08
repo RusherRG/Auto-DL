@@ -76,7 +76,8 @@ pyvenv_create() {
 
 run_install() {
     # run install.sh
-    sudo $WORKDIR/scripts/install.sh
+    # $WORKDIR/scripts/install.sh
+    echo ""
 }
 
 frontend_setup() {
@@ -87,7 +88,8 @@ frontend_setup() {
 
 backend_setup() {
     echo -e "${INFO} Setting up backend"
-    pip install -r requirements.txt
+    sudo pip3 install setuptools
+    pip3 install -r $WORKDIR/requirements.txt
 }
 
 run() {
@@ -129,22 +131,22 @@ terminate(){
 
 setup() {
     echo -e "${INFO} Setting up..."
-    frontend_setup
-    if [ $? -eq 0 ]
-    then
-        echo -e "${TICK} Frontend setup complete"
-    else
-        echo -e "${CROSS} Frontend setup failed"
-    fi
-    cd $WORKDIR
-    echo ""
-
     backend_setup
     if [ $? -eq 0 ]
     then
         echo -e "${TICK} Backend setup complete"
     else
         echo -e "${CROSS} Backend setup failed"
+    fi
+    cd $WORKDIR
+    echo ""
+
+    frontend_setup
+    if [ $? -eq 0 ]
+    then
+        echo -e "${TICK} Frontend setup complete"
+    else
+        echo -e "${CROSS} Frontend setup failed"
     fi
     cd $WORKDIR
     echo ""
