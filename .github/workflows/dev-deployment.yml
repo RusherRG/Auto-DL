@@ -40,3 +40,29 @@ jobs:
           context: FrontEndApp/v1-react/
           tags: autodlhub/frontend:${{ steps.latest_tag.outputs.tag }}
           push: true
+
+  civo-deploy:
+    name: Deploy to civo
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          repository: 'Auto-DL/k8s-deployment'
+      - name: Install civo
+        uses: civo/action-civo@v1.0.0
+        with:
+          token: ${{ secrets.CIVO_TOKEN }}
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+      - name: Install kubectl
+        run: |
+          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+          kubectl version --client
+      - name: Configure civo kubeconfig
+        run: |
+          civo kubernetes config development --save --merge
+          kubectl config use-context development
+      - name: Get pods
+        run: kubectl get pods
